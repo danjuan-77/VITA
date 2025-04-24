@@ -14,5 +14,5 @@ python video_audio_demo.py \
     --image_path asset/vita_newlog.png \
     --model_type qwen2p5_instruct \
     --conv_mode qwen2p5_instruct \
-    --audio_path /share/nlp/tuwenming/projects/VITA/asset/q2.wav
+    --audio_path asset/q1.wav
 
