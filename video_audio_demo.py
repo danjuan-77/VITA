@@ -182,7 +182,7 @@ if __name__ == "__main__":
 
     model.eval()
     if audio_path is not None:
-        audio, audio_for_llm_lens = audio_processor.process(audio_path)
+        audio, audio_for_llm_lens = audio_processor.process(os.path.join(audio_path))
         audio_length = audio.shape[0]
         audio = torch.unsqueeze(audio, dim=0)
         audio_length = torch.unsqueeze(torch.tensor(audio_length), dim=0)
