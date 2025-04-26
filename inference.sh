@@ -21,4 +21,4 @@ python video_audio_demo.py \
   --audio_path  "/share/nlp/tuwenming/projects/MiniCPM-o/assets/input_examples/audio_understanding.mp3" \
   --model_type  qwen2p5_instruct \
   --conv_mode   qwen2p5_instruct \
-  --question    "Please describe the content of this audio."
+#   --question    "Please describe the content of this audio."
