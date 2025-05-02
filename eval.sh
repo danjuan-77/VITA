@@ -11,7 +11,7 @@ CONV_MODE="qwen2p5_instruct"
 # Test 1: Text + Image
 # --------------------------
 # Provide an image and a question.
-python video_audio_demo.py \
+python eval.py \
   --model_path "$MODEL_PATH" \
   --image_path "asset/vita_newlog.jpg" \
   --model_type "$MODEL_TYPE" \
@@ -22,7 +22,7 @@ python video_audio_demo.py \
 # Test 2: Text + Audio
 # --------------------------
 # Provide an audio file and a question.
-python video_audio_demo.py \
+python eval.py \
   --model_path "$MODEL_PATH" \
   --model_type "$MODEL_TYPE" \
   --conv_mode "$CONV_MODE" \
@@ -33,7 +33,7 @@ python video_audio_demo.py \
 # Test 3: Text + Video
 # --------------------------
 # Provide a video file and a question.
-python video_audio_demo.py \
+python eval.py \
   --model_path "$MODEL_PATH" \
   --model_type "$MODEL_TYPE" \
   --conv_mode "$CONV_MODE" \
@@ -44,7 +44,7 @@ python video_audio_demo.py \
 # Test 4: Text + Video + Audio
 # --------------------------
 # Provide both video frames and a separate audio file along with a question.
-python video_audio_demo.py \
+python eval.py \
   --model_path "$MODEL_PATH" \
   --model_type "$MODEL_TYPE" \
   --conv_mode "$CONV_MODE" \
