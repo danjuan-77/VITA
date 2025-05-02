@@ -57,4 +57,4 @@ python eval.py \
   --model_path "$MODEL_PATH" \
   --model_type "$MODEL_TYPE" \
   --conv_mode "$CONV_MODE" \
-  --task_path /share/nlp/tuwenming/projects/HAVIB/data/levels/level_1/LVQA
+  --task_path /share/nlp/tuwenming/projects/HAVIB/data/levels/level_3/AVL
