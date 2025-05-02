@@ -26,7 +26,7 @@ python video_audio_demo.py \
   --model_path "$MODEL_PATH" \
   --model_type "$MODEL_TYPE" \
   --conv_mode "$CONV_MODE" \
-  --question "How many beats can you hear?" \
+  --question "Describe the audio." \
   --audio_path "/share/nlp/tuwenming/projects/HAVIB/data/levels/level_1/LAQA/input/wavs/beats_counting/00000_0.wav"
 
 # # --------------------------
