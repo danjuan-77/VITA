@@ -618,7 +618,14 @@ if __name__ == "__main__":
         if outputs.endswith(stop_str):
             outputs = outputs[: -len(stop_str)]
         outputs = outputs.strip()
-        print(outputs)
+        pred_record = {
+            "task": _task,
+            "subtask": _subtask,
+            "id": _id,
+            "predict": outputs,
+        }
+        predictions.append(pred_record)
+        print('>>> ans=:', pred_record)
         print(f"Time consume: {infer_time}")
 
 
