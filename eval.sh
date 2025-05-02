@@ -22,12 +22,12 @@ CONV_MODE="qwen2p5_instruct"
 # # Test 2: Text + Audio
 # # --------------------------
 # # Provide an audio file and a question.
-python video_audio_demo.py \
-  --model_path "$MODEL_PATH" \
-  --model_type "$MODEL_TYPE" \
-  --conv_mode "$CONV_MODE" \
-  --question "Describe the audio." \
-  --audio_path "/share/nlp/tuwenming/projects/MiniCPM-o/assets/input_examples/audio_understanding.mp3"
+# python video_audio_demo.py \
+#   --model_path "$MODEL_PATH" \
+#   --model_type "$MODEL_TYPE" \
+#   --conv_mode "$CONV_MODE" \
+#   --question "Describe the audio." \
+#   --audio_path "/share/nlp/tuwenming/projects/MiniCPM-o/assets/input_examples/audio_understanding.mp3"
 
 # # --------------------------
 # # Test 3: Text + Video
@@ -53,8 +53,8 @@ python video_audio_demo.py \
 #   --audio_path "/share/nlp/tuwenming/projects/HAVIB/data/levels/level_3/AVH/input/wavs/00000.wav"
 
 
-# python eval.py \
-#   --model_path "$MODEL_PATH" \
-#   --model_type "$MODEL_TYPE" \
-#   --conv_mode "$CONV_MODE" \
-#   --task_path /share/nlp/tuwenming/projects/HAVIB/data/levels/level_1/LAQA
+python eval.py \
+  --model_path "$MODEL_PATH" \
+  --model_type "$MODEL_TYPE" \
+  --conv_mode "$CONV_MODE" \
+  --task_path /share/nlp/tuwenming/projects/HAVIB/data/levels/level_1/LIQA

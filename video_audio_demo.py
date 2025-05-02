@@ -244,7 +244,7 @@ if __name__ == "__main__":
     conv.append_message(conv.roles[0], qs)
     conv.append_message(conv.roles[1], None)
     prompt = conv.get_prompt(modality)
-    print(f"Prompt:>>>\n{prompt}")
+    # print(f"Prompt:>>>\n{prompt}")
 
     if audio_path:
         input_ids = (
