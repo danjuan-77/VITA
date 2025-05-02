@@ -4,7 +4,8 @@ from PIL import Image
 import torchaudio  
 from decord import VideoReader, cpu  
 import numpy as np  
-  
+from vita.util.mm_utils import get_model_name_from_path
+
 def process_multimodal_input(model_path, input_data, question=None):  
     """  
     处理多模态输入并获取模型输出  
@@ -28,7 +29,8 @@ def process_multimodal_input(model_path, input_data, question=None):
     # 加载模型和tokenizer  
     tokenizer, model, image_processor, _ = load_pretrained_model(  
         model_path,   
-        None,   
+        None,
+        model_name=get_model_name_from_path(model_path),
         model_type='mixtral-8x7b',  # 可以根据需要更改为'qwen2p5_instruct'等  
         device_map='auto'  
     )  
