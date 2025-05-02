@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export CUDA_VISIBLE_DEVICES=0
+export CUDA_VISIBLE_DEVICES=3
 
 # python video_audio_demo.py \
 #     --model_path "/share/nlp/tuwenming/models/VITA-MLLM/VITA-1.5" \
