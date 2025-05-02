@@ -11,7 +11,7 @@ CONV_MODE="qwen2p5_instruct"
 # # Test 1: Text + Image
 # # --------------------------
 # # Provide an image and a question.
-# python eval.py \
+# python video_audio_demo.py \
 #   --model_path "$MODEL_PATH" \
 #   --image_path "asset/vita_newlog.jpg" \
 #   --model_type "$MODEL_TYPE" \
@@ -22,18 +22,18 @@ CONV_MODE="qwen2p5_instruct"
 # # Test 2: Text + Audio
 # # --------------------------
 # # Provide an audio file and a question.
-# python eval.py \
-#   --model_path "$MODEL_PATH" \
-#   --model_type "$MODEL_TYPE" \
-#   --conv_mode "$CONV_MODE" \
-#   --question "Please describe the content of this audio." \
-#   --audio_path "/share/nlp/tuwenming/projects/MiniCPM-o/assets/input_examples/audio_understanding.mp3"
+python video_audio_demo.py \
+  --model_path "$MODEL_PATH" \
+  --model_type "$MODEL_TYPE" \
+  --conv_mode "$CONV_MODE" \
+  --question "How many beats can you hear?" \
+  --audio_path "/share/nlp/tuwenming/projects/HAVIB/data/levels/level_1/LAQA/input/wavs/beats_counting/00000_0.wav"
 
 # # --------------------------
 # # Test 3: Text + Video
 # # --------------------------
 # # Provide a video file and a question.
-# python eval.py \
+# python video_audio_demo.py \
 #   --model_path "$MODEL_PATH" \
 #   --model_type "$MODEL_TYPE" \
 #   --conv_mode "$CONV_MODE" \
@@ -44,7 +44,7 @@ CONV_MODE="qwen2p5_instruct"
 # # Test 4: Text + Video + Audio
 # # --------------------------
 # # Provide both video frames and a separate audio file along with a question.
-# python eval.py \
+# python video_audio_demo.py \
 #   --model_path "$MODEL_PATH" \
 #   --model_type "$MODEL_TYPE" \
 #   --conv_mode "$CONV_MODE" \
@@ -53,8 +53,8 @@ CONV_MODE="qwen2p5_instruct"
 #   --audio_path "/share/nlp/tuwenming/projects/HAVIB/data/levels/level_3/AVH/input/wavs/00000.wav"
 
 
-python eval.py \
-  --model_path "$MODEL_PATH" \
-  --model_type "$MODEL_TYPE" \
-  --conv_mode "$CONV_MODE" \
-  --task_path /share/nlp/tuwenming/projects/HAVIB/data/levels/level_1/LAQA
+# python eval.py \
+#   --model_path "$MODEL_PATH" \
+#   --model_type "$MODEL_TYPE" \
+#   --conv_mode "$CONV_MODE" \
+#   --task_path /share/nlp/tuwenming/projects/HAVIB/data/levels/level_1/LAQA
