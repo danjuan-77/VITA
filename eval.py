@@ -116,107 +116,6 @@ def _get_rawvideo_dec(
     else:
         print("video path: {} error.".format(video_path))
 
-def prepare_model_inputs(
-    tokenizer,
-    model,
-    image_processor,
-    audio_processor,
-    *,
-    video_path=None,
-    image_path=None,
-    audio_path=None,
-    question="",
-    conv_mode="mixtral_two",
-    max_frames=MAX_IMAGE_LENGTH,
-    video_framerate=1,
-):
-    """
-    将外部输入（音视频/图片/文本）转换为模型推理所需的张量和 token IDs。
-
-    参数:
-        tokenizer: 用于文本 token 化的 tokenizer。
-        model: 已加载的 multimodal 模型。
-        image_processor: 视觉预处理器（来自 vision tower）。
-        audio_processor: 音频预处理器（来自 audio encoder）。
-        video_path (str|None): 视频文件路径。
-        image_path (str|None): 图片文件路径。
-        audio_path (str|None): 音频文件路径。
-        question (str): 用户的文本提示。
-        conv_mode (str): 对话模板键名。
-        max_frames (int): 视频帧最大抽样数。
-        video_framerate (int): 视频抽样帧率。
-
-    返回:
-        input_ids (torch.LongTensor): (1, seq_len) 的文本 token 张量，已在 CUDA 上。
-        image_tensor (torch.FloatTensor): 视觉输入张量，已在 CUDA 上。
-        audios (dict): 包含 'audios','lengths','lengths_for_llm' 的音频张量，均已在 CUDA 上。
-        stopping (list): 停止生成条件列表。
-    """
-    # —— 音频处理 —— #
-    if audio_path:
-        audio, audio_len = audio_processor.process(audio_path)
-        audio = audio.unsqueeze(0).half().cuda()
-        lengths = torch.tensor(audio.shape[1]).half().cuda()
-        lengths_llm = torch.tensor(audio_len).cuda()
-    else:
-        audio = torch.zeros((1, 400, 80)).half().cuda()
-        lengths = torch.tensor(audio.shape[1]).half().cuda()
-        lengths_llm = torch.tensor(60).cuda()
-    audios = {"audios": audio, "lengths": lengths, "lengths_for_llm": lengths_llm}
-
-    # —— 视觉处理 —— #
-    if video_path:
-        # 调用已有的解码函数
-        frames, slice_len = _get_rawvideo_dec(
-            video_path,
-            image_processor,
-            max_frames=max_frames,
-            video_framerate=video_framerate,
-            image_aspect_ratio=getattr(model.config, "image_aspect_ratio", None),
-        )
-        image_tensor = frames.half().cuda()
-        prompt_prefix = DEFAULT_IMAGE_TOKEN * slice_len + "\n"
-    elif image_path:
-        img = Image.open(image_path).convert("RGB")
-        img_proc, p_num = dynamic_preprocess(
-            img, min_num=1, max_num=12, image_size=448, use_thumbnail=True
-        )
-        image_tensor = model.process_images(img_proc, model.config).to(
-            dtype=model.dtype, device="cuda"
-        )
-        prompt_prefix = DEFAULT_IMAGE_TOKEN * p_num[0] + "\n"
-    else:
-        image_tensor = torch.zeros((1, 3, 448, 448), dtype=model.dtype, device="cuda")
-        prompt_prefix = ""
-
-    # —— 构建完整提示 —— #
-    qs = prompt_prefix + question
-    if audio_path:
-        qs += DEFAULT_AUDIO_TOKEN
-
-    conv = conv_templates[conv_mode].copy()
-    conv.append_message(conv.roles[0], qs)
-    conv.append_message(conv.roles[1], None)
-    modality = "video" if video_path else "image" if image_path else "lang"
-    prompt = conv.get_prompt(modality)
-
-    # —— 文本 Token 化 —— #
-    if audio_path:
-        input_ids = tokenizer_image_audio_token(
-            prompt, tokenizer, IMAGE_TOKEN_INDEX, return_tensors="pt"
-        )
-    else:
-        input_ids = tokenizer_image_token(
-            prompt, tokenizer, IMAGE_TOKEN_INDEX, return_tensors="pt"
-        )
-    input_ids = input_ids.unsqueeze(0).cuda()
-
-    # —— 停止条件 —— #
-    stop_str = conv.sep if conv.sep_style != SeparatorStyle.TWO else conv.sep2
-    stopping = KeywordsStoppingCriteria([stop_str], tokenizer, input_ids)
-
-    return input_ids, image_tensor, audios, [stopping], stop_str
-
 
 if __name__ == "__main__":
     # Initialize the parser
@@ -282,17 +181,87 @@ if __name__ == "__main__":
     audio_processor = audio_encoder.audio_processor
 
     model.eval()
-    input_ids, image_tensor, audios, stopping_criteria, stop_str = prepare_model_inputs(
-        tokenizer=tokenizer,
-        model=model,
-        image_processor=image_processor,
-        audio_processor=audio_processor,
-        video_path=args.video_path,    # 若无视频则传 None
-        image_path=args.image_path,                    # 若无图片则传 None
-        audio_path=args.audio_path,    # 若无音频则传 None
-        question=args.question,
-        conv_mode=args.conv_mode
-    )
+    if audio_path is not None:
+        audio, audio_for_llm_lens = audio_processor.process(os.path.join(audio_path))
+        audio_length = audio.shape[0]
+        audio = torch.unsqueeze(audio, dim=0)
+        audio_length = torch.unsqueeze(torch.tensor(audio_length), dim=0)
+        audio_for_llm_lens = torch.unsqueeze(torch.tensor(audio_for_llm_lens), dim=0)
+        audios = dict()
+        audios["audios"] = audio.half().cuda()
+        audios["lengths"] = audio_length.half().cuda()
+        audios["lengths_for_llm"] = audio_for_llm_lens.cuda()
+    else:
+        audio = torch.zeros(400, 80)
+        audio_length = audio.shape[0]
+        audio_for_llm_lens = 60
+        audio = torch.unsqueeze(audio, dim=0)
+        audio_length = torch.unsqueeze(torch.tensor(audio_length), dim=0)
+        audio_for_llm_lens = torch.unsqueeze(torch.tensor(audio_for_llm_lens), dim=0)
+        audios = dict()
+        audios["audios"] = audio.half().cuda()
+        audios["lengths"] = audio_length.half().cuda()
+        audios["lengths_for_llm"] = audio_for_llm_lens.cuda()
+        # audios = None
+
+    # Check if the video exists
+    if video_path is not None:
+        video_frames, slice_len = _get_rawvideo_dec(
+            video_path,
+            image_processor,
+            max_frames=max_frames,
+            video_framerate=video_framerate,
+            image_aspect_ratio=getattr(model.config, "image_aspect_ratio", None),
+        )
+        image_tensor = video_frames.half().cuda()
+        if audio_path:
+            qs = DEFAULT_IMAGE_TOKEN * slice_len + "\n" + qs + DEFAULT_AUDIO_TOKEN
+        else:
+            qs = DEFAULT_IMAGE_TOKEN * slice_len + "\n" + qs
+        modality = "video"
+    elif image_path is not None:
+        image = Image.open(image_path).convert("RGB")
+        if args.frameCat:
+            image, p_num = dynamic_preprocess(image, min_num=2, max_num=12, image_size=448, use_thumbnail=True, img_mean=image_processor.image_mean)
+        else:
+            image, p_num = dynamic_preprocess(image, min_num=1, max_num=12, image_size=448, use_thumbnail=True)
+        assert len(p_num) == 1
+        image_tensor = model.process_images(image, model.config).to(
+            dtype=model.dtype, device="cuda"
+        )
+        if audio_path:
+            qs = DEFAULT_IMAGE_TOKEN * p_num[0] + "\n" + qs + DEFAULT_AUDIO_TOKEN
+        else:
+            qs = DEFAULT_IMAGE_TOKEN * p_num[0] + "\n" + qs
+        modality = "image"
+    else:
+        image_tensor = torch.zeros((1, 3, 448, 448)).to(dtype=model.dtype, device="cuda")
+        if audio_path:
+            qs = qs + DEFAULT_AUDIO_TOKEN
+        modality = "lang"
+
+    conv = conv_templates[conv_mode].copy()
+    conv.append_message(conv.roles[0], qs)
+    conv.append_message(conv.roles[1], None)
+    prompt = conv.get_prompt(modality)
+
+    if audio_path:
+        input_ids = (
+            tokenizer_image_audio_token(prompt, tokenizer, IMAGE_TOKEN_INDEX, return_tensors="pt")
+            .unsqueeze(0)
+            .cuda()
+        )
+    else:
+        input_ids = (
+            tokenizer_image_token(prompt, tokenizer, IMAGE_TOKEN_INDEX, return_tensors="pt")
+            .unsqueeze(0)
+            .cuda()
+        )
+
+    stop_str = conv.sep if conv.sep_style != SeparatorStyle.TWO else conv.sep2
+    keywords = [stop_str]
+    stopping_criteria = KeywordsStoppingCriteria(keywords, tokenizer, input_ids)
+
     start_time = time.time()
     with torch.inference_mode():
         output_ids = model.generate(
