@@ -142,7 +142,7 @@ if __name__ == "__main__":
     image_path = args.image_path
     audio_path = args.audio_path
     qs = args.question
-    assert (audio_path is None) != (qs == ""), "Exactly one of audio_path or qs must be non-None"
+    # assert (audio_path is None) != (qs == ""), "Exactly one of audio_path or qs must be non-None"
     conv_mode = args.conv_mode
 
     if args.frameCat:
