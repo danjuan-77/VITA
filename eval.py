@@ -627,5 +627,9 @@ if __name__ == "__main__":
         predictions.append(pred_record)
         print('>>> ans=:', pred_record)
         print(f"Time consume: {infer_time}")
+    
+    
+    with open(save_prediction_json, 'w', encoding='utf-8') as json_file:
+        json.dump(predictions, json_file, ensure_ascii=False, indent=4)
 
 
