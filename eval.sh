@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export CUDA_VISIBLE_DEVICES=2
+export CUDA_VISIBLE_DEVICES=1
 
 # Reusable settings to keep the script DRY
 MODEL_PATH="/share/nlp/tuwenming/models/VITA-MLLM/VITA-1.5"
@@ -128,11 +128,11 @@ python eval.py \
 #   --conv_mode "$CONV_MODE" \
 #   --task_path /share/nlp/tuwenming/projects/HAVIB/data/levels/level_4/AVC
 
-# python eval.py \
-#   --model_path "$MODEL_PATH" \
-#   --model_type "$MODEL_TYPE" \
-#   --conv_mode "$CONV_MODE" \
-#   --task_path /share/nlp/tuwenming/projects/HAVIB/data/levels/level_4/AVLG
+python eval.py \
+  --model_path "$MODEL_PATH" \
+  --model_type "$MODEL_TYPE" \
+  --conv_mode "$CONV_MODE" \
+  --task_path /share/nlp/tuwenming/projects/HAVIB/data/levels/level_4/AVLG
 
 # python eval.py \
 #   --model_path "$MODEL_PATH" \
@@ -140,12 +140,12 @@ python eval.py \
 #   --conv_mode "$CONV_MODE" \
 #   --task_path /share/nlp/tuwenming/projects/HAVIB/data/levels/level_4/AVQA
 
-# # level 5
-# python eval.py \
-#   --model_path "$MODEL_PATH" \
-#   --model_type "$MODEL_TYPE" \
-#   --conv_mode "$CONV_MODE" \
-#   --task_path /share/nlp/tuwenming/projects/HAVIB/data/levels/level_5/AVLG
+# level 5
+python eval.py \
+  --model_path "$MODEL_PATH" \
+  --model_type "$MODEL_TYPE" \
+  --conv_mode "$CONV_MODE" \
+  --task_path /share/nlp/tuwenming/projects/HAVIB/data/levels/level_5/AVLG
 
 # python eval.py \
 #   --model_path "$MODEL_PATH" \
@@ -153,4 +153,4 @@ python eval.py \
 #   --conv_mode "$CONV_MODE" \
 #   --task_path /share/nlp/tuwenming/projects/HAVIB/data/levels/level_5/AVQA
 
-# nohup bash eval.sh > /share/nlp/tuwenming/projects/HAVIB/logs/eval_vita_gpu3_$(date +%Y%m%d%H%M%S).log 2>&1 &
+# nohup bash eval.sh > /share/nlp/tuwenming/projects/HAVIB/logs/eval_vita_gpu1_$(date +%Y%m%d%H%M%S).log 2>&1 &
