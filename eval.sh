@@ -85,11 +85,11 @@ CONV_MODE="qwen2p5_instruct"
 #   --task_path /share/nlp/tuwenming/projects/HAVIB/data/levels/level_2/MVIC
 
 # # level 3
-# python eval.py \
-#   --model_path "$MODEL_PATH" \
-#   --model_type "$MODEL_TYPE" \
-#   --conv_mode "$CONV_MODE" \
-#   --task_path /share/nlp/tuwenming/projects/HAVIB/data/levels/level_3/AVH
+python eval.py \
+  --model_path "$MODEL_PATH" \
+  --model_type "$MODEL_TYPE" \
+  --conv_mode "$CONV_MODE" \
+  --task_path /share/nlp/tuwenming/projects/HAVIB/data/levels/level_3/AVH
 
 python eval.py \
   --model_path "$MODEL_PATH" \
@@ -109,11 +109,11 @@ python eval.py \
 #   --conv_mode "$CONV_MODE" \
 #   --task_path /share/nlp/tuwenming/projects/HAVIB/data/levels/level_3/AVR
 
-# python eval.py \
-#   --model_path "$MODEL_PATH" \
-#   --model_type "$MODEL_TYPE" \
-#   --conv_mode "$CONV_MODE" \
-#   --task_path /share/nlp/tuwenming/projects/HAVIB/data/levels/level_3/VAH
+python eval.py \
+  --model_path "$MODEL_PATH" \
+  --model_type "$MODEL_TYPE" \
+  --conv_mode "$CONV_MODE" \
+  --task_path /share/nlp/tuwenming/projects/HAVIB/data/levels/level_3/VAH
 
 # python eval.py \
 #   --model_path "$MODEL_PATH" \
@@ -121,12 +121,12 @@ python eval.py \
 #   --conv_mode "$CONV_MODE" \
 #   --task_path /share/nlp/tuwenming/projects/HAVIB/data/levels/level_3/VAR
 
-# # level 4
-# python eval.py \
-#   --model_path "$MODEL_PATH" \
-#   --model_type "$MODEL_TYPE" \
-#   --conv_mode "$CONV_MODE" \
-#   --task_path /share/nlp/tuwenming/projects/HAVIB/data/levels/level_4/AVC
+# level 4
+python eval.py \
+  --model_path "$MODEL_PATH" \
+  --model_type "$MODEL_TYPE" \
+  --conv_mode "$CONV_MODE" \
+  --task_path /share/nlp/tuwenming/projects/HAVIB/data/levels/level_4/AVC
 
 python eval.py \
   --model_path "$MODEL_PATH" \
@@ -134,11 +134,11 @@ python eval.py \
   --conv_mode "$CONV_MODE" \
   --task_path /share/nlp/tuwenming/projects/HAVIB/data/levels/level_4/AVLG
 
-# python eval.py \
-#   --model_path "$MODEL_PATH" \
-#   --model_type "$MODEL_TYPE" \
-#   --conv_mode "$CONV_MODE" \
-#   --task_path /share/nlp/tuwenming/projects/HAVIB/data/levels/level_4/AVQA
+python eval.py \
+  --model_path "$MODEL_PATH" \
+  --model_type "$MODEL_TYPE" \
+  --conv_mode "$CONV_MODE" \
+  --task_path /share/nlp/tuwenming/projects/HAVIB/data/levels/level_4/AVQA
 
 # level 5
 python eval.py \
@@ -147,10 +147,10 @@ python eval.py \
   --conv_mode "$CONV_MODE" \
   --task_path /share/nlp/tuwenming/projects/HAVIB/data/levels/level_5/AVLG
 
-# python eval.py \
-#   --model_path "$MODEL_PATH" \
-#   --model_type "$MODEL_TYPE" \
-#   --conv_mode "$CONV_MODE" \
-#   --task_path /share/nlp/tuwenming/projects/HAVIB/data/levels/level_5/AVQA
+python eval.py \
+  --model_path "$MODEL_PATH" \
+  --model_type "$MODEL_TYPE" \
+  --conv_mode "$CONV_MODE" \
+  --task_path /share/nlp/tuwenming/projects/HAVIB/data/levels/level_5/AVQA
 
-# nohup bash eval.sh > /share/nlp/tuwenming/projects/HAVIB/logs/eval_vita_gpu1_$(date +%Y%m%d%H%M%S).log 2>&1 &
+# nohup bash eval.sh > /share/nlp/tuwenming/projects/HAVIB/logs/eval_vita_unimodal_gpu1_$(date +%Y%m%d%H%M%S).log 2>&1 &
