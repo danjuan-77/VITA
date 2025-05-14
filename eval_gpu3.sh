@@ -11,6 +11,12 @@ python eval.py \
   --model_path "$MODEL_PATH" \
   --model_type "$MODEL_TYPE" \
   --conv_mode "$CONV_MODE" \
-  --task_path /share/nlp/tuwenming/projects/HAVIB/data/levels/level_4/AVC
+  --task_path /share/nlp/tuwenming/projects/HAVIB/data/levels/level_6/AVSQA_av
+
+python eval.py \
+  --model_path "$MODEL_PATH" \
+  --model_type "$MODEL_TYPE" \
+  --conv_mode "$CONV_MODE" \
+  --task_path /share/nlp/tuwenming/projects/HAVIB/data/levels/level_6/AVSQA_v
 
 # nohup bash eval_gpu3.sh > /share/nlp/tuwenming/projects/HAVIB/logs/eval_vita_unimodal_gpu3_$(date +%Y%m%d%H%M%S).log 2>&1 &
